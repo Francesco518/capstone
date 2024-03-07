@@ -34,15 +34,27 @@ public class UsersService {
     }
     public User findAndUpdate(long id, User newUser) {
         User found = this.findById(id);
-        found.setUsername(newUser.getUsername());
-        found.setName(newUser.getName());
-        found.setSurname(newUser.getSurname());
-        found.setEmail(newUser.getEmail());
-        found.setPassword(newUser.getPassword());
+
+        if (newUser.getName() != null) {
+            found.setName(newUser.getName());
+        }
+        if (newUser.getSurname() != null) {
+            found.setSurname(newUser.getSurname());
+        }
+        if (newUser.getEmail() != null) {
+            found.setEmail(newUser.getEmail());
+        }
+        if (newUser.getPassword() != null && !newUser.getPassword().isEmpty()) {
+            found.setPassword(newUser.getPassword());
+        }
+
         return this.userRepository.save(found);
     }
     public void findAndDelete(long id) {
         User found = this.findById(id);
         this.userRepository.delete(found);
+    }
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User with this email has not been found"));
     }
 }

@@ -22,8 +22,9 @@ public class MoviesService {
     @Autowired
     private UsersService usersService;
 
-    public List<Movie> getMovies() {
-        return this.movieRepository.findAll();
+    public Page<Movie> getMovies(int pageNum, int size, String orderBy) {
+        Pageable pageable = PageRequest.of(pageNum, size, Sort.by(orderBy));
+        return movieRepository.findAll(pageable);
     }
 
     public Movie findById(long id) {
@@ -31,7 +32,6 @@ public class MoviesService {
     }
 
     public Movie save(NewMoviePayload body) {
-        User user = usersService.findById(body.getUserId());
         Movie movie = new Movie();
         movie.setTitle(body.getTitle());
         movie.setDescription(body.getDescription());

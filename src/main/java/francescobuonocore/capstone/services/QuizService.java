@@ -6,6 +6,10 @@ import francescobuonocore.capstone.exceptions.NotFoundException;
 import francescobuonocore.capstone.payloads.NewQuizPayload;
 import francescobuonocore.capstone.repositories.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,14 +22,14 @@ public class QuizService {
     @Autowired
     private UsersService usersService;
 
-    public List<Quiz> getQuizzes() {
-        return this.quizRepository.findAll();
+    public Page<Quiz> getQuizzes(int pageNum, int size, String orderBy) {
+        Pageable pageable = PageRequest.of(pageNum, size, Sort.by(orderBy));
+        return quizRepository.findAll(pageable);
     }
     public Quiz findById(long id) {
         return this.quizRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
     public Quiz save(NewQuizPayload body) {
-        User user = usersService.findById(body.getUserId());
         Quiz quiz = new Quiz();
         quiz.setTextQuestion(body.getTextQuestion());
         quiz.setOptionsAnswer(body.getOptionsAnswer());
