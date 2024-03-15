@@ -40,4 +40,13 @@ public class MovieController {
     public void findAndDelete(@PathVariable long id) {
         this.moviesService.findAndDelete(id);
     }
+    @GetMapping("/filter")
+    public Page<Movie> filterMoviesByCategory(
+            @RequestParam("category") String category,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String order
+    ) {
+        return moviesService.filterByCategory(category, page, size, order);
+    }
 }

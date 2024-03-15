@@ -1,11 +1,14 @@
 package francescobuonocore.capstone.controller;
 
 import francescobuonocore.capstone.entities.User;
+import francescobuonocore.capstone.exceptions.BadRequestException;
 import francescobuonocore.capstone.payloads.NewUserDTO;
 import francescobuonocore.capstone.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,4 +37,9 @@ public class UserController {
     public void findAndDelete(@PathVariable long id) {
         this.usersService.findAndDelete(id);
     }
+    @GetMapping("/me")
+    public User getMe(@AuthenticationPrincipal User currentAuthenticatedUser) {
+        return currentAuthenticatedUser;
+    }
+
 }

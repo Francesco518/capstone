@@ -62,4 +62,8 @@ public class MoviesService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(order));
         return movieRepository.findByCategory(category, pageable);
     }
+    public Page<Movie> filterByCategory(String category, int page, int size, String order) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(order));
+        return movieRepository.findByCategory(category, pageable);
+    }
 }
